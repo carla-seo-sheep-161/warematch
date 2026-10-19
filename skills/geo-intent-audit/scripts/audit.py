@@ -71,9 +71,18 @@ for s in secs:
     P(f"- {tag:55s} concrete={c} generic={g} :: {s['head'][:60]}")
     if tag.startswith("INTER"): inter.append(s["head"])
 # decision aids (added 2026-10-21 after the USA rewrite: red flags / good answers / fit rules are real utility the concrete-token count misses)
-DEC = re.compile(r"\b(red flag|good answer|warning sign|be wary|fits better when|usually a better fit|a good .{0,40} is)\b", re.I)
+DEC = re.compile(r"\b(red flag|good answer|warning sign|be wary|walk away if|be cautious|fits better when|usually a better fit|a good .{0,40} is)\b", re.I)
 da = [s_["head"] for s_ in secs if s_["lvl"] >= 3 and DEC.search(s_["text"])]
 P(f"\n- decision aids (red flags / good-answer markers / fit rules): {len(da)} sections")
+# ---- 3b "so what" test: figures must change a decision (owner feedback 2026-10-21: stat dumps are not useful)
+CUE = re.compile(r"\b(so|which means|means|therefore|because|ask|check|choose|compare|pull|rank|decide|can shorten|better fit|should|avoid|shortlist|ask how)\b", re.I)
+dump = []
+for s_ in secs:
+    if s_["lvl"] < 3: continue
+    figs = len(re.findall(r"\d[\d,.]*%?|\b(?:million|thousand)\b", plain(s_["html"]))); cues = len(CUE.findall(s_["text"]))
+    if figs >= 4 and cues < 2: dump.append(f"{s_['head'][:55]} ({figs} figures, {cues} decision cues)")
+P("\n## 3b. 'So what' test: stat dumps (>=4 figures, <2 decision cues)")
+P("- " + ("; ".join(dump) if dump else "none"))
 # ---- 4 citations / freshness
 P("\n## 4. Citations and freshness")
 ext = re.findall(r'<a [^>]*href="https?://(?!www\.warematch)[^"]+"[^>]*>', raw)
