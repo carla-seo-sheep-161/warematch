@@ -24,6 +24,26 @@ if MODE == "location":
     cnt = {n: len(re.findall("<h3", s_)) for s_ in secs[1:] for n in [next((w for w in LOC if w in re.sub(r"<[^>]+>", "", s_.split("</h2>")[0]).lower()), "?")]}
     for n, want_n in (("what to consider", 3), ("what to look for", 8), ("frequently asked", 6)):
         if cnt.get(n) != want_n: fails.append(f"{n}: {cnt.get(n)} H3s, template wants {want_n}")
+    # slot sentence limits from the country template
+    def nsent(t):
+        t = re.sub(r"\bU\.S\.", "US", re.sub(r"<[^>]+>", " ", t)); return len(re.findall(r"[.!?](?:\s+(?=[A-Z0-9\"(])|\s*$)", t.strip() + " "))
+    for s_ in secs[1:]:
+        title = re.sub(r"<[^>]+>", "", s_.split("</h2>")[0]).lower()
+        paras = [(re.sub(r"<[^>]+>", "", h3).strip(), p) for h3, p in re.findall(r"<h3>(.*?)</h3>\s*<p>(.*?)</p>", s_, re.S)]
+        if "what to consider" in title:
+            for i, (h3, p) in enumerate(paras):
+                lim = 1 if i == 2 else 5
+                if nsent(p) > lim: fails.append(f"consider point {i+1} has {nsent(p)} sentences (max {lim}): {h3[:40]}")
+            intro = re.search(r"</h2>\s*<p>(.*?)</p>", s_, re.S)
+            if intro and nsent(intro.group(1)) != 1: fails.append("consider intro must be 1 sentence")
+        if "what to look for" in title:
+            for h3, p in paras:
+                if nsent(p) > 3: fails.append(f"look-for point has {nsent(p)} sentences (max 3): {h3[:40]}")
+        if "find a 3pl in" in title:
+            ps = re.findall(r"<p>(.*?)</p>", s_, re.S)
+            if not ps or not 1 <= nsent(ps[0]) <= 2: fails.append("'Find a 3PL in...' blurb must be 1-2 sentences")
+    tl = re.search(r"</h1>\s*<p>(.*?)</p>", html, re.S)
+    if tl and nsent(tl.group(1)) > 3: fails.append(f"TL;DR has {nsent(tl.group(1))} sentences (keep to 3 or fewer)")
 if not BLOG and got != want: fails.append(f"H2 sequence {got} != template {want}")
 if re.search("[\U0001F300-\U0001FAFF☀-➿]|&#(?:9\d{3}|1[2-3]\d{4});", html): fails.append("emoji found")
 tldr = html.split("<h2", 1)[0]; kt = re.search(r"Key Takeaways.*?(?=<h2)", html, re.S | re.I)
