@@ -1,29 +1,34 @@
 ---
 name: geo-intent-audit
-description: Audit a drafted or live page for deep GEO relevance, search-intent match and real usefulness to the reader, beyond the surface NeuronWriter/SEO score. Use after a draft passes the pipeline gates (or on a live page) when asked to evaluate utility, intent coverage, AI-answer (GEO) extractability, specificity/expertise, trust, or whether a page would actually be cited or useful. Companion to the seo-content-pipeline skill.
+description: GEO check for on-site content. Audits a drafted or live page for search-intent fit, real usefulness (non-commodity content), AI-answer readiness (crawler access, raw-HTML visibility, snippet controls, clean visible sourcing) and technical on-page health (metadata rules, structured data hygiene, headings). Use after a draft passes the content pipeline gates, or on any live WareMatch page, when asked to run a GEO check, evaluate utility or intent coverage, check whether AI search can read/cite a page, or audit metadata/schema against the team's SEO audit docs. Companion to the seo-content-pipeline skill.
 ---
 
-# GEO + intent + utility audit
+# GEO check (geo-intent-audit) v1.0
 
-Purpose: the pipeline's NeuronWriter gate measures term coverage. It does not tell you whether the page answers what searchers actually want, whether an AI engine could lift a clean answer from it, or whether it says anything an expert would call useful. This skill does, with evidence.
+## What the evidence says (read this first; see references/INDEX.md)
+- Google's own guide (updated 2026-07-10): optimizing for generative AI search "is still SEO". Its main lever is **unique, non-commodity content**, meaning "unique expert or experienced takes that go beyond common knowledge". It says you do not need to chunk content, create llms.txt, add special schema, or write differently for AI.
+- So this skill weights **usefulness and eligibility** (indexed, snippet-eligible, readable without JavaScript, bots not blocked) far above any "AI trick". Schema, llms.txt, word counts and "ideal passage length" are hygiene or unproven, never reported as lift.
+- Research on specific tactics (quotations, statistics, citations, answer-first, self-contained passages) is mixed and comes from generic QA benchmarks, not 3PL/B2B pages. Treat those items as quality practice graded C, not guarantees.
 
-## Inputs
-- the page (HTML-in-markdown draft, or a live URL fetched to text)
-- `queries.txt`: one query per line = sheet long-tail queries + the primary/secondary keywords + NeuronWriter people-also-ask / topic_matrix questions + real GSC / SEO Gets queries for the page (include the conversational, LLM-style ones: they show how AI engines fan out)
-- page type (location | industry | blog), primary keyword, the NW analysis JSON (SERP intent mix, competitor headings, entities), the facts file, the title/meta that will ship
+## Three layers
+1. **Technical on-page** (`scripts/technical_check.py <url> --type location|industry|integration|blog|listing|home --primary "<kw>" [--must "text|text"]`). Fetches RAW HTML (no JavaScript): visible text, H1/heading order, metadata vs the team's rules (title <=65, description <=160, keyword in first 40, "| WareMatch", write "3PL", no "...", canonical, robots, Open Graph), snippet controls (nosnippet / max-snippet / data-nosnippet / X-Robots-Tag), JSON-LD hygiene (script-block count, duplicate @id, expected types, breadcrumb URL = page URL, no empty ratings/"N/A" prices, no invalid types such as LogisticsBusiness, FAQ schema matches visible text), alt text, robots.txt rules for AI bots (GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-SearchBot, Claude-User, PerplexityBot, Perplexity-User, Google-Extended, Bingbot, Googlebot), llms.txt (informational), freshness signals.
+2. **Content checks** (`scripts/audit.py <draft> --queries queries.txt --primary "<kw>" --type <t> --title T --desc D --entities <nw analysis.json>`). Local only: query coverage (fan-out style), answer-first and self-contained passages, per-section specificity (flags INTERCHANGEABLE sections), decision aids (red flags / good answers), uncited figures and figures without a period, promo ratio, repetition, keyword-stuffing density, hype words, quote attribution, schema readiness, entity coverage.
+3. **Judged rubric** (`rubric.md`): the model scores intent fit, non-commodity information gain, decision utility, locality swap-test, trust and house rules, quoting the page for every score and stating the evidence grade.
 
 ## Process
-1. **Gather queries** (never invent them). Note the SERP intent mix and content types from the NW `serp_summary`.
-2. **Run the deterministic checks** (local, no network, no LLM, no embeddings):
-   `python3 -I skills/geo-intent-audit/scripts/audit.py <draft> --queries queries.txt --primary "<kw>" --type <type> --title "<T>" --desc "<D>" --entities <analysis.json>`
-   It reports query coverage, answer-first / passage self-containment, specificity per section (flags INTERCHANGEABLE sections), uncited figures, freshness, promo ratio, repetition, schema readiness, and the house metadata rules (title <=65, description <=160, keyword in first 40 chars, "| WareMatch", write "3PL", CTA).
-3. **Apply the judged rubric** in `rubric.md` yourself, quoting the page for every score (intent fit, decision utility, information gain vs the SERP, location swap-test, trust, differentiation, house-rule compliance).
-4. **Optional live check** (only for published pages): fetch the raw HTML and confirm the H1, TL;DR and key sections exist WITHOUT JavaScript (AI crawlers often do not run JS; the team's own audit found rendered-vs-initial HTML mismatches and listings hidden behind a click that LLMs never see).
-5. **Report**: scorecard (0-5 per dimension with evidence), the 5 highest-value fixes ranked by reader impact, what data/expert input each fix needs, and open decisions for the owner. Be blunt: say when a section is interchangeable with any 3PL page.
+1. Gather queries (sheet long-tail, keywords, GSC / SEO Gets incl. conversational LLM-style queries, NeuronWriter people-also-ask / topic matrix). Never invent queries.
+2. Run technical_check on the live URL (or skip for unpublished drafts) and audit.py on the draft.
+3. Apply rubric.md; compare with the SERP (NeuronWriter competitor headings, serp_summary) for information gain.
+4. Report: scorecard (0-5 + evidence + grade), INTERCHANGEABLE sections, technical FAIL/WARN list with the doc/source behind each, top-5 fixes ranked by reader impact, data or expert input each fix needs, owner decisions. Be blunt.
+5. Log before/after in the pipeline case log; send fixes back as tasks.
 
 ## Rules
-- Do not call external LLM or embedding APIs (e.g. the Gemini key) with page content unless the owner approves; the local lexical checks are v1.
-- Never fabricate numbers, sources or queries. Mark anything unverified.
-- Never rank or name competitors in suggested fixes; stay agnostic.
-- Scores are judgements with evidence, not predictions of ranking or citation.
-- Log the audit result (before/after) in the pipeline case log; feed fixes back as tasks, not silent rewrites.
+- Evidence grades: A = primary official source; B = original-data study by the publisher; C = academic/benchmark by analogy; D = marketing/unverified (never cite as a requirement).
+- No external LLM/embedding API calls with page content unless the owner approves.
+- Never fabricate numbers, sources, queries or dates; never recommend fake "last updated" dates.
+- Never name or rank competitors in fixes.
+- Do not report schema, llms.txt, chunk length or word count as GEO lift. Do not penalize a page for lacking them.
+- The checkers are heuristics. Raw-HTML tests show what a non-rendering crawler sees; Googlebot does render JavaScript, other AI crawlers are unconfirmed (third-party 2024 study says no), so "content in the initial HTML" is a prudent default, not a proven rule.
+
+## Known limits
+Lexical coverage only; locked template copy inflates promo/uncited counts; no AI-citation testing tool; cross-script-block JSON-LD merging behavior is unverified; no study covers 3PL/B2B/location pages.

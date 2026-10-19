@@ -93,6 +93,19 @@ P(f"- {a.brand} mentions: {bm} ({bm/(words(txt)/100):.2f} per 100 words); in TL;
 w = re.findall(r"[a-z']+", txt); tri = collections.Counter(zip(w, w[1:], w[2:]))
 rep = [" ".join(k) + f" ({c})" for k, c in tri.items() if c >= 4]
 P(f"- repeated 3-word phrases (>=4x): {rep[:8] or 'none'}")
+# ---- 5b negative flags backed by evidence: keyword stuffing, hype, unattributed quotes
+P("\n## 5b. Negative flags (keyword stuffing, hype, quotes)")
+if a.primary:
+    pw = a.primary.lower().split(); n_pk = len(re.findall(re.escape(a.primary.lower()), txt)); dens = n_pk / max(words(txt) / 100, 1)
+    P(f"- primary keyword '{a.primary}' density: {n_pk} uses, {dens:.2f} per 100 words ({'FLAG: possible stuffing' if dens > 2.5 else 'ok'}; the GEO paper found keyword stuffing gave little or no gain)")
+HYPE = ["revolutionary", "game-changing", "game changer", "best-in-class", "world-class", "cutting-edge", "unparalleled", "seamless", "industry-leading", "state-of-the-art", "next-generation"]
+hy = [h for h in HYPE if h in txt]; P(f"- hype words: {hy or 'none'}")
+bq = re.findall(r"<blockquote.*?</blockquote>", raw, re.S | re.I)
+ATTR = re.compile(r"<(cite|footer)|[-\u2014] ?[A-Z][a-z]+")
+n_attr = sum(1 for b in bq if ATTR.search(b))
+P(f"- blockquotes: {len(bq)}; with an attribution (name + role/company in a cite/footer): {n_attr} (quotations need a real, named source)")
+fig_noperiod = [plain(s_)[:80] for s_ in re.split(r"(?<=[.!?])\s+", re.sub(r"<[^>]+>", " ", raw)) if re.search(r"\d[\d,]{3,}|\d+%", s_) and not re.search(r"\b20\d\d\b|quarter|month|week", s_, re.I)]
+P(f"- sentences with a figure but no year/period: {len(fig_noperiod)} (every statistic should carry its period)")
 # ---- 6 structure / schema readiness / metadata rules
 P("\n## 6. Structure and metadata rules (from the team's schema + meta docs)")
 faq_n = sum(1 for s in secs if s["lvl"] == 3 and qform.search(s["head"]))
