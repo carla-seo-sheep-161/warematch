@@ -28,7 +28,8 @@ miss_h2 = [t["t"] for t in a["terms"]["h2"] if t["usage_pc"] >= 50 and t["t"].lo
 ents = [e["t"] for e in a["terms"]["entities"][:25] if e["t"].lower() not in text and not SKIP.search(e["t"])]
 facts = open("facts/" + json.load(open(f"configs/{run}.json"))["facts"].split("/")[-1]).read()
 fn = {n.rstrip(".,") for n in re.findall(r"\d[\d,.]*", facts)}
-if cfg.get("locked_text_file"): fn |= {n.rstrip(".,") for n in re.findall(r"\d[\d,.]*", open(cfg["locked_text_file"]).read())}; newnums = sorted({n.rstrip(".,") for n in re.findall(r"\b\d[\d,.]*\b", text)} - fn - set("123456789") - {"10"})
+if cfg.get("locked_text_file"): fn |= {n.rstrip(".,") for n in re.findall(r"\d[\d,.]*", open(cfg["locked_text_file"]).read())}
+newnums = sorted({n.rstrip(".,") for n in re.findall(r"\b\d[\d,.]*\b", text)} - fn - set("123456789") - {"10"})
 ext = re.findall(r'<a [^>]*href="https?://(?!www\.warematch)[^"]*"[^>]*>', html)
 import subprocess
 chk = subprocess.run([sys.executable, "-I", os.path.join(os.path.dirname(os.path.abspath(__file__)), "check_page.py"), path, cfg.get("mode", "-")], capture_output=True, text=True)

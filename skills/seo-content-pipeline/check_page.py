@@ -47,10 +47,13 @@ if MODE == "location":
 if not BLOG and got != want: fails.append(f"H2 sequence {got} != template {want}")
 if re.search("[\U0001F300-\U0001FAFF☀-➿]|&#(?:9\d{3}|1[2-3]\d{4});", html): fails.append("emoji found")
 tldr = html.split("<h2", 1)[0]; kt = re.search(r"Key Takeaways.*?(?=<h2)", html, re.S | re.I)
+tldr = re.sub(r'<a [^>]*quick-create[^>]*>.*?</a>', "", tldr) if BLOG else tldr  # blog "recommended first" structure: the RFQ CTA button is allowed up top
 for name, seg in (("TL;DR", tldr), ("Key Takeaways", kt.group(0) if kt else "")):
     if "<a " in seg: fails.append(f"link inside {name}")
 links = re.findall(r'<a [^>]*href="([^"]+)"[^>]*>', html)
-internal = [l for l in links if l.startswith("/") or "warematch.com" in l]; ext = re.findall(r'<a [^>]*href="https?://(?!www\.warematch)[^"]+"[^>]*>', html)
+CTA = "questionnaires-management/quick-create"
+internal = [l for l in links if (l.startswith("/") or "warematch.com" in l) and CTA not in l]    # RFQ CTA links are exempt from the cap/dup rules
+ext = re.findall(r'<a [^>]*href="https?://(?!www\.warematch)[^"]+"[^>]*>', html)
 norm = [("https://www.warematch.com" + l if l.startswith("/") else l).rstrip("/") for l in internal]
 if len(norm) > 5: fails.append(f"{len(norm)} internal links (max 5)")
 if len(set(norm)) != len(norm): fails.append("duplicate internal link target")
