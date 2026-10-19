@@ -1,0 +1,8 @@
+.env
+.env.*
+__pycache__/
+.DS_Store
+**/runs/
+**/research/samples/
+site_inventory.json
+*.pyc

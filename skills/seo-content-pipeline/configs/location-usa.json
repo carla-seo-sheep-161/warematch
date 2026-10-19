@@ -1,0 +1,18 @@
+{
+ "page_url": "https://www.warematch.com/location/usa",
+ "h1": "Find 3PL Warehousing in the United States",
+ "primary": "3PL US [5400]",
+ "secondary": "US warehousing, US fulfillment, 3pl services in the usa, 3pl usa, us 3pl, us 3pl companies",
+ "longtail": "",
+ "skeleton": "",
+ "facts": "facts/location-usa.md",
+ "existing_problems": "",
+ "mode": "location",
+ "gate": 60,
+ "title": "3PL Services & Warehouses in the United States | WareMatch",
+ "description": "Find 3PL warehouses across the United States, including California, Texas and Pennsylvania. Compare pallet storage and fulfillment providers and get quotes.",
+ "skip_terms_regex": "nigeria|\\bsap\\b|nike|walmart|\\bfedex\\b|\\busps\\b|amazon|\\bups\\b|\\bj\\.?b\\.? hunt|c\\.h\\. robinson|gxo|expeditors|kuehne|redstag|red stag|shipbob|freightos|top 3pl companies|biggest 3pl|3pl companies in the world|largest|ranked|\\brankings?\\b",
+ "locked_text_file": "runs/location-usa/locked_text.txt",
+ "title_nw_variant": "3PL US: Find Third-Party Logistics and 3PL Companies in the US",
+ "description_nw_variant": "Find 3PL companies in the US. Compare third-party logistics providers, see where warehouse capacity sits and check customs, FDA and hazmat rules."
+}
