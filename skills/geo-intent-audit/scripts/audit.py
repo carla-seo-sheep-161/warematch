@@ -100,6 +100,34 @@ P(f"- audience assumption: {len(ec)} e-commerce references ({'FLAG: general 3PL 
 wm = [x for x in re.split(r"(?<=[.!?])\s+", plain(raw)) if re.search(re.escape(a.brand), x, re.I) and re.search(r"\b(filter|request|quote|compare|match)\b", x, re.I)] if False else []
 conn = [x for x in re.split(r"(?<=[.!?])\s+", plain(raw)) if re.search(r"\b(filter|your request|one request|send one request|request for quote|compare matched)\b", x, re.I)]
 P(f"- WareMatch connection: {len(conn)} sentences tie a local decision to a WareMatch action (filter / one request / compare matched providers); location pages should have >=3 ({'FLAG' if a.type == 'location' and len(conn) < 3 else 'ok'}). Facts about WareMatch's own network need real data: never invent counts.")
+# ---- 3d section roles for the state/country templates: Whether (When to Choose) -> Where (What to Consider) -> Which/How (What to Look for)
+ROLE = {"when to choose": "decide", "what to consider": "landscape", "what to look for": "vet"}
+role_secs = {}
+for s_ in re.split(r"(?=<h2)", raw)[1:]:
+    t_ = plain(re.search(r"<h2[^>]*>(.*?)</h2>", s_, re.S).group(1)).lower()
+    for k_, v_ in ROLE.items():
+        if k_ in t_: role_secs[v_] = s_
+if len(role_secs) >= 2:
+    P("\n## 3d. Section roles (each must hold its own: Whether / Where / Which-and-how)")
+    PROV = re.compile(r"\b(ask (?:each|any|the|for|how|which|whether)|shortlist|filter|each provider|walk away|red flag|good answer|be cautious|be wary|warning sign)\b", re.I)
+    if "decide" in role_secs:
+        bl = [plain(x) for x in re.findall(r"<li>(.*?)</li>", role_secs["decide"], re.S)]; bad_ = [x[:60] for x in bl if PROV.search(x)]
+        P(f"- decide (When to Choose): {len(bl)} bullets; provider-advice bullets (belong in 'What to look for'): {bad_ or 'none'}")
+    if "landscape" in role_secs:
+        pts = re.findall(r"<h3>(.*?)</h3>\s*<p>(.*?)</p>", role_secs["landscape"], re.S)
+        offenders = [plain(h)[:40] for h, p in pts if len(re.findall(r"\b(red flag|walk away|good answer|be cautious|be wary|warning sign)\b", p, re.I)) or len(re.findall(r"\bask (?:each|any|the|for|how|which|whether)\b", p, re.I)) > 0]
+        P(f"- landscape (What to Consider): points containing vetting asks/red flags (belong in 'What to look for'): {offenders or 'none'}")
+    if "vet" in role_secs:
+        pts = re.findall(r"<h3>(.*?)</h3>\s*<p>(.*?)</p>", role_secs["vet"], re.S)
+        weak = [plain(h)[:40] for h, p in pts if not re.search(r"\b(ask|confirm|check)\b", p, re.I) or not re.search(r"\b(red flag|walk away|good answer|be cautious|be wary|warning sign|confirm)\b", p, re.I)]
+        P(f"- vet (What to Look for): points missing an ask or a good-answer/red-flag cue: {weak or 'none'}")
+    SW = set("the a an of to in for and or is are be on at by with from your you it its that this as which can may more most not but if so also than their they".split())
+    def cw(x): return {w for w in re.findall(r"[a-z]{5,}", plain(x).lower()) if w not in SW}
+    names = list(role_secs); 
+    for i_ in range(len(names)):
+        for j_ in range(i_ + 1, len(names)):
+            A_, B_ = cw(role_secs[names[i_]]), cw(role_secs[names[j_]]); jac = len(A_ & B_) / max(len(A_ | B_), 1)
+            P(f"- overlap {names[i_]} vs {names[j_]}: {jac:.0%} shared distinctive words ({'FLAG: sections may not hold their own' if jac > 0.22 else 'ok'}); shared: {sorted(A_ & B_)[:8]}")
 # ---- 4 citations / freshness
 P("\n## 4. Citations and freshness")
 ext = re.findall(r'<a [^>]*href="https?://(?!www\.warematch)[^"]+"[^>]*>', raw)
