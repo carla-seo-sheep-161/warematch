@@ -15,7 +15,7 @@ Built on the Shopify 3PL page (2026-10-15). Everything is parameterized so a pro
 1. **Audit current page** (WebFetch): note repeated phrases, CTAs, missing stats → goes into config `existing_problems`.
 2. **Pull keyword row** from the sheet (match on URL).
 3. **Fact research** (WebSearch + WebFetch on the primary source). Rules: only primary/authoritative sources (gov, trade bodies, platform's own docs); fetch the page and confirm the number before writing it to the facts file; record date. Need ≥2 EXTERNAL facts per page. Competitor marketing pages are never cited. If a primary URL 404s (Census PDF did), cite an official mirror (FRED).
-4. **NeuronWriter queries** — `nw.py new-query` ×3 on the same keyword with `competitors_mode` = `top10`, `top30`, `top-intent` (project `<NEURONWRITER_PROJECT_ID>`, engine `google.com`). Then `fetch_analyses.py <run>` polls `/get-query` until ready (~60s) → `runs/<slug>/analysis_<mode>.json`.
+4. **NeuronWriter queries** — `nw.py new-query` ×3 on the same keyword with `competitors_mode` = `top10`, `top30`, `top-intent` (project `d18ee15696efff53`, engine `google.com`). Then `fetch_analyses.py <run>` polls `/get-query` until ready (~60s) → `runs/<slug>/analysis_<mode>.json`.
    - Observed: SERP competitor table is the same 28 rows across modes; modes change the *term/entity/H2 recommendations* and readability target (top10/intent 40, top30 38). Word target was 2088 in all.
 5. **Build prompts** — `build_prompt.py <run> <mode> <config>` fills `templates/prompt_template.md` ({{PLACEHOLDERS}}) → `prompt_<mode>.md`.
 6. **Draft** — each prompt is run in a fresh agent (no shared context) → `draft_<mode>.md` (page, claims table, title, meta).
@@ -156,7 +156,7 @@ Rule: data goes in a page ONLY if it changes a reader's decision. Never pad with
 | After 2 optimization rounds (agent) | 61 | 50 | 1,743 words; contained filler + own-wording claims |
 | Final after manual cleanup, imported | **59** | **49** | 1,663 words; 5 internal / 9 nofollow external links; below the 60 gate on both |
 Competitors: match-intent median 39.5 / best 78 (informational, 58.6% of SERP; listicles 27.6%); top-10 median 48.5 / best 71.
-Queries: <neuronwriter-query-url> (intent), <neuronwriter-query-url> (top 10). Draft: runs/location-usa/draft_final.md. GSC baseline (90d): 37 impressions, 0 clicks, no relevant queries. Not published; sheet columns not yet written; AI Optimization not recorded.
+Queries: https://app.neuronwriter.com/analysis/view/d4d516a6b79c2b3f (intent), https://app.neuronwriter.com/analysis/view/e6482141305bdd6b (top 10). Draft: runs/location-usa/draft_final.md. GSC baseline (90d): 37 impressions, 0 clicks, no relevant queries. Not published; sheet columns not yet written; AI Optimization not recorded.
 Findings: (1) the locked text + small slots cap the score (~49 unused terms; "supply chain", "ecommerce" etc. only at the low end); (2) the top-10 SERP is dominated by 'top 3PL companies' rankings the page must not produce; (3) the optimization agent re-introduced filler again, so a manual read-through/cleanup is a required stage (cost ~2 pts); (4) compliance facts were each re-read at government/court sources by the lead, and 3 agent claims (Wayfair quote, PHMSA pages, a cosmetics-holding exemption) were NOT used because they could not be verified; (5) check_page.py gained a 'location' mode: H2 order, locked copy verbatim vs live, H3 counts 3/8/6.
 
 ### Case 3 update (2026-10-21, after owner pushback 'you stopped too early')
