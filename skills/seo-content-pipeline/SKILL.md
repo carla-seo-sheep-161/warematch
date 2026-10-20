@@ -12,16 +12,20 @@ The unit of work is one page = one keyword-map row + a config (`configs/<slug>.j
 - Secrets live OUTSIDE the repo. `nw.py` reads `API_KEY_NEURONWRITER` from the file named by `ENV_FILE` (default `~/Desktop/WareMatch/.env`). Never print or commit keys.
 - `fetch_inventory.py <sheet_id> [gid]` downloads the link-readable keyword-map tab into `site_inventory.json` (internal-link candidates).
 
-## Stages
-1. **Row + audit**: match the sheet row by URL (rows drift); fetch the live page; pull GSC/SEO Gets queries for the page.
-2. **Skeleton**: locked template (industry, location templates in `templates/`) or, for blogs, one inferred from SERP headings + long-tail queries and approved by a human.
-3. **Facts**: every number current, cited, and read at the PRIMARY source into `facts/<slug>.md` (grade A/B/C, dates, re-verify-by). Never cite competitors. Agent-supplied claims are re-read by the lead before use.
-4. **NeuronWriter**: `nw.py new-query` (one mode by default; modes differ little), `fetch_analyses.py`. Build the term skip-list for competitor boilerplate.
-5. **Draft** with `build_prompt.py` + `templates/prompt_template.md` (fresh agent).
-6. **Gate**: `optimize.py <run> <mode> <draft>` (score with the SHIPPING title/meta, term ranges, numbers vs facts), `check_page.py <draft> <industry|blog|location>` (template lock, no emoji, link rules), `promo_check.py` (blogs: education first, brand late and once, no superlatives), `verify_sources.py`, `suggest_links.py` (candidates; final choice is judgement; max 5).
-7. **Human read-through** (required): agents add filler and unsupported lines to reach a score; cut them.
-8. **Audit**: run the `geo-intent-audit` skill (intent coverage, extractability, specificity, locality swap-test).
-9. **Import** to NeuronWriter, log before/after in `PIPELINE.md`, then publish and annotate (SEO Gets) only with owner approval.
+## Stages (v2: every step exists because of a real miss; see PIPELINE.md "Failure modes -> controls")
+1. **Row + live audit + GSC queries** (match the sheet row by URL; rows drift).
+2. **Keyword/brief sanity**: `keyword_check.py <gsc.json> "<sheet primary>" ["<alt>"]` and the SERP intent (landlord/listing vs 3PL services) before choosing the NeuronWriter brief.
+3. **Skeleton / template mode**: `check_page.py` modes `industry`, `blog` (add `--urgent` promo mode for "recommended first"), `location` (country), `state`; locked copy is checked verbatim against the live page.
+4. **Facts**: primary-source only, lead re-reads every claim; unreadable PDFs and agent-only claims are excluded; never cite companies that sell warehousing/3PL/space.
+5. **NeuronWriter briefs**: `nw.py new-query`, `fetch_analyses.py`; map briefs in the page config (`"briefs"`); defaults in `configs/_defaults.json` merge with the page skip list.
+6. **Draft** (`build_prompt.py` + template) with a fresh agent, or write directly.
+7. **Easy-terms sweep (mandatory)**: `optimize.py` prints basic and extended term coverage; **basic must be >= 90%** before any "ceiling" claim.
+8. **Gates**: `optimize.py <run> <brief> <draft>` (score with the SHIPPING title/meta; rounded figures within 3% are accepted), `check_page.py`, `promo_check.py` (blogs), `verify_sources.py`.
+9. **Human read-through**: `READTHROUGH.md` (12 checks: so-what, repetition, audience assumptions, unsupported claims, headings, WareMatch connection, links, template, sources, keyword choice, etiquette).
+10. **geo-intent-audit** skill (intent, usefulness, so-what, repetition, WareMatch connection).
+11. **`regress.py`** after ANY tool change: re-checks every page config.
+12. **Import + sheet**: import only if the owner is not editing that brief (use read-only `evaluate-content` otherwise); fill only EMPTY sheet output cells; never overwrite owner entries.
+13. **Log** the case in PIPELINE.md; `runlog.py` for time/tokens/dollars (token counts entered by hand; price per 1M tokens for claude-sonnet-5-5: input $2.00, output $10.00, cache read $0.20).
 
 ## Rules that override the score
 Template lock; house metadata rules (titles <=65 with the keyword in the first 40 and "| WareMatch", descriptions <=160 with a CTA, write "3PL"); education-first blogs with WareMatch as one option; no competitor names or rankings; no invented or uncited numbers; authored content must be in the initial HTML.

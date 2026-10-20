@@ -15,6 +15,9 @@ description: GEO check for on-site content. Audits a drafted or live page for se
 2. **Content checks** (`scripts/audit.py <draft> --queries queries.txt --primary "<kw>" --type <t> --title T --desc D --entities <nw analysis.json>`). Local only: query coverage (fan-out style), answer-first and self-contained passages, per-section specificity (flags INTERCHANGEABLE sections), decision aids (red flags / good answers), uncited figures and figures without a period, promo ratio, repetition, keyword-stuffing density, hype words, quote attribution, schema readiness, entity coverage.
 3. **Judged rubric** (`rubric.md`): the model scores intent fit, non-commodity information gain, decision utility, locality swap-test, trust and house rules, quoting the page for every score and stating the evidence grade.
 
+## Checks added from real misses (owner feedback)
+- 3b **so-what**: >=4 figures with <2 decision cues = stat dump. 3c **repetition**: >=4 shared names/figures across sections; **audience assumption**: e-commerce wording on general pages; **WareMatch connection**: location pages need >=3 sentences tying a local decision to a WareMatch action (filter / one request / compare matched providers). All heuristics; confirm by reading (`pipeline/READTHROUGH.md`).
+
 ## Process
 1. Gather queries (sheet long-tail, keywords, GSC / SEO Gets incl. conversational LLM-style queries, NeuronWriter people-also-ask / topic matrix). Never invent queries.
 2. Run technical_check on the live URL (or skip for unpublished drafts) and audit.py on the draft.

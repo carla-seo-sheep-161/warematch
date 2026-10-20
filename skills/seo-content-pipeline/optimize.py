@@ -8,8 +8,12 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import nw
 run, v = sys.argv[1:3]
 path = sys.argv[3] if len(sys.argv) > 3 else f"runs/{run}/draft_{v}.md"
 html = open(path).read().split("\n---")[0]
-a = json.load(open(f"runs/{run}/analysis_{v}.json")); q = json.load(open(f"runs/{run}/query_{v}.json"))["query"]
-cfg = json.load(open(f"configs/{run}.json"))
+import os as _os
+_cfg0 = {**json.load(open("configs/_defaults.json")), **json.load(open(f"configs/{run}.json"))}
+_tag = (_cfg0.get("briefs") or {}).get(v, v)
+a = json.load(open(f"runs/{run}/analysis_{_tag}.json")); q = json.load(open(f"runs/{run}/query_{_tag}.json"))["query"]
+_d = json.load(open("configs/_defaults.json")); _p = json.load(open(f"configs/{run}.json"))
+cfg = {**_d, **_p}; cfg["skip_terms_regex"] = "|".join(x for x in (_d.get("skip_terms_regex"), _p.get("skip_terms_regex")) if x)  # defaults + page-specific, never replace
 score = nw.call("evaluate-content", query=q, html=html, **({"title": cfg["title"], "description": cfg["description"]} if cfg.get("title") else {})).get("content_score")
 comp = [c["content_score"] for c in a["competitors"][:10] if c.get("content_score") is not None]
 target = cfg.get("gate") or max(st.median(comp) + 2, 60)
@@ -23,7 +27,7 @@ for k in ("content_basic", "content_extended"):
         if SKIP.search(t["t"]): continue
         lo, hi = t["sugg_usage"]; n = count(t["t"])
         if n < lo: missing.append(f"- '{t['t']}': used {n}x, target {lo}-{hi}x")
-        elif n > hi: over.append(f"- '{t['t']}': used {n}x, MAX {hi}x — reduce")
+        elif n > hi and not re.search(cfg.get("over_ignore_regex", "$^"), t["t"], re.I): over.append(f"- '{t['t']}': used {n}x, MAX {hi}x — reduce")
 miss_h2 = [t["t"] for t in a["terms"]["h2"] if t["usage_pc"] >= 50 and t["t"].lower() not in head]
 ents = [e["t"] for e in a["terms"]["entities"][:25] if e["t"].lower() not in text and not SKIP.search(e["t"])]
 facts = open("facts/" + json.load(open(f"configs/{run}.json"))["facts"].split("/")[-1]).read()
@@ -39,9 +43,15 @@ def _near(n):  # rounded figures are fine: within 3% of a fact, also as thousand
 newnums = sorted(n for n in {n.rstrip(".,") for n in re.findall(r"\b\d[\d,.]*\b", text)} - fn - set("123456789") - {"10"} if not _near(n))
 ext = re.findall(r'<a [^>]*href="https?://(?!www\.warematch)[^"]*"[^>]*>', html)
 import subprocess
-chk = subprocess.run([sys.executable, "-I", os.path.join(os.path.dirname(os.path.abspath(__file__)), "check_page.py"), path, cfg.get("mode", "-")], capture_output=True, text=True)
+chk = subprocess.run([sys.executable, "-I", os.path.join(os.path.dirname(os.path.abspath(__file__)), "check_page.py"), path, cfg.get("mode", "-")] + ([cfg["locked_json"]] if cfg.get("locked_json") else []), capture_output=True, text=True)
 page_ok = chk.returncode == 0
-ok = page_ok and score is not None and score >= target and not over and all('rel="nofollow' in x for x in ext) and len(ext) >= 2
+_basic = [t for t in a["terms"]["content_basic"] if not SKIP.search(t["t"])]
+_bmiss = [t["t"] for t in _basic if count(t["t"]) < t["sugg_usage"][0]]
+_bcov = (len(_basic) - len(_bmiss)) / max(len(_basic), 1)
+_ext = [t for t in a["terms"]["content_extended"] if not SKIP.search(t["t"])]
+_ecov = sum(1 for t in _ext if count(t["t"]) >= t["sugg_usage"][0]) / max(len(_ext), 1)
+print(f"term coverage: basic {_bcov:.0%} (missing {_bmiss}), extended {_ecov:.0%}" + ("  <-- WARN: run the easy-terms sweep" if _ecov < cfg.get("ext_cov_warn", 0.4) else ""))
+ok = page_ok and score is not None and _bcov >= cfg.get("basic_cov_min", 0.9) and score >= target and not over and all('rel="nofollow' in x for x in ext) and len(ext) >= 2
 brief = f"""# Revision brief — {v}
 Score {score} | gate {target} | competitor top-10 median {st.median(comp)}, best {max(a['competitors'][i]['content_score'] for i in range(len(a['competitors'])) if a['competitors'][i].get('content_score'))}
 ## Terms under-used (add only where they read naturally; reach the LOW end, never exceed MAX)

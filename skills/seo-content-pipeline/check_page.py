@@ -11,11 +11,45 @@ want = ["key takeaways", "why (and when)", "why shopify", "seamless", "specific 
 got = [next((w for w in want if w in h.lower()), "OTHER:" + h) for h in h2]
 MODE = sys.argv[2] if len(sys.argv) > 2 else "-"
 BLOG = MODE in ("blog", "location")
+LOCKED_JSON = sys.argv[3] if len(sys.argv) > 3 else "runs/location-usa/locked_sections.json"
+if MODE == "state":
+    BLOG = True
+    LOC = ["why use warematch", "find a 3pl in", "how warematch works", "when to choose", "what to consider", "what to look for", "frequently asked"]
+    got_l = [next((w for w in LOC if w in h.lower()), "OTHER:" + h) for h in h2]
+    if got_l != LOC: fails.append(f"H2 sequence {got_l} != state template {LOC}")
+    lock = json.load(open(LOCKED_JSON)) if os.path.exists(LOCKED_JSON) else {}
+    plain = re.sub(r"\s+", " ", H.unescape(re.sub(r"<[^>]+>", " ", html)))
+    for k, v in lock.items():
+        for line in [x.strip() for x in v.splitlines() if x.strip()]:
+            if re.sub(r"\s+", " ", line) not in plain: fails.append("locked copy changed: " + line[:50]); break
+    secs = re.split(r"(?=<h2)", html)
+    cnt = {}
+    for s_ in secs[1:]:
+        n = next((w for w in LOC if w in re.sub(r"<[^>]+>", "", s_.split("</h2>")[0]).lower()), "?"); cnt[n] = len(re.findall("<h3", s_))
+        if n == "when to choose":
+            ths = re.findall(r"<th[^>]*>(.*?)</th>", s_, re.S)
+            if "<table" not in s_ or len(ths) != 2 or "need" not in ths[0].lower() or "may not need" not in ths[1].lower(): fails.append("when-to-choose must be a table: 'You need a [State] 3PL if' | 'You may not need one yet if'")
+            if len(re.findall("<li", s_)) < 6: fails.append("when-to-choose needs bullet points in each column")
+    for n, want_n in (("what to look for", 3), ("frequently asked", 6)):
+        if cnt.get(n) != want_n: fails.append(f"{n}: {cnt.get(n)} H3s, template wants {want_n}")
+    if cnt.get("what to consider") != 3: fails.append(f"what to consider: {cnt.get('what to consider')} H3s, template wants 3")
+    def nsent(t):
+        t = re.sub(r"\bU\.S\.", "US", re.sub(r"<[^>]+>", " ", t)); return len(re.findall(r"[.!?](?:\s+(?=[A-Z0-9\"(])|\s*$)", t.strip() + " "))
+    for s_ in secs[1:]:
+        title = re.sub(r"<[^>]+>", "", s_.split("</h2>")[0]).lower()
+        if "what to consider" in title or "what to look for" in title:
+            for h3, p in re.findall(r"<h3>(.*?)</h3>\s*<p>(.*?)</p>", s_, re.S):
+                if nsent(p) > 5: fails.append(f"point has {nsent(p)} sentences (max 5): {re.sub('<[^>]+>', '', h3)[:40]}")
+        if "find a 3pl in" in title:
+            ps = re.findall(r"<p>(.*?)</p>", s_, re.S)
+            if not ps or not 1 <= nsent(ps[0]) <= 2: fails.append("'Find a 3PL in...' blurb must be 1-2 sentences")
+    tl = re.search(r"</h1>\s*<p>(.*?)</p>", html, re.S)
+    if tl and nsent(tl.group(1)) > 3: fails.append("TL;DR has more than 3 sentences")
 if MODE == "location":
     LOC = ["find 3pls", "why use warematch", "find a 3pl in", "how warematch works", "what to consider", "what to look for", "frequently asked"]
     got_l = [next((w for w in LOC if w in h.lower()), "OTHER:" + h) for h in h2]
     if got_l != LOC: fails.append(f"H2 sequence {got_l} != country template {LOC}")
-    lock = json.load(open("runs/location-usa/locked_sections.json")) if os.path.exists("runs/location-usa/locked_sections.json") else {}
+    lock = json.load(open(LOCKED_JSON)) if os.path.exists(LOCKED_JSON) else {}
     plain = re.sub(r"\s+", " ", H.unescape(re.sub(r"<[^>]+>", " ", html)))
     for k, v in lock.items():
         for line in [x.strip() for x in v.splitlines() if x.strip()]:
@@ -63,6 +97,9 @@ if len(ext) < 2: fails.append("fewer than 2 external links")
 if any("nofollow" not in a for a in ext): fails.append("external link missing nofollow")
 sections = re.split(r"(?=<h2)", html)
 h3n = {re.sub(r"<[^>]+>", "", s.split("</h2>")[0]).strip()[:30]: len(re.findall("<h3", s)) for s in sections[1:]}
+for _h in re.findall(r"<h[1-3][^>]*>(.*?)</h[1-3]>", html, re.S | re.I):
+    _t = re.sub(r"<[^>]+>", "", _h).strip()
+    if _t and not (_t[0].isupper() or _t[0].isdigit()): fails.append(f"heading must start with a capital letter: {_t[:40]}")
 print("H3 per section:", h3n)
 print("internal:", len(norm), "external:", len(ext), "words:", len(re.sub(r"<[^>]+>", " ", html).split()))
 print("FAIL: " + "; ".join(fails) if fails else "PASS template/policy checks"); sys.exit(1 if fails else 0)

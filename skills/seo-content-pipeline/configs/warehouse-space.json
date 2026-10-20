@@ -11,5 +11,7 @@
  "title": "How to Find Warehouse Space Immediately | WareMatch",
  "description": "Need warehouse space now? Send one request, compare matched providers and get bids in about a day or two. Full guide to leases, shared space and brokers.",
  "gate": 75,
- "skip_terms_regex": "readyspaces|dallas|california|minikatana|bnsf|metro\\b|ranging from|starting at|\\b90\\b|\\b200\\b|furniture rental|construction materials|virtual tour|features and benefits|same security|private units|multi-unit|one monthly rate|varies based on unit|browse available units|co-warehousing|small business community|1 readyspaces|visitor management|air cargo|airport|cargo|entrepreneurship|startup|closed-circuit|infrastructure|\\boffers?\\b|caters|\\bprovides\\b|locations may|know about renting|needs based on size|business needs based|penalty for scaling|satellite|small operators"
+ "skip_terms_regex": "readyspaces|dallas|california|minikatana|bnsf|metro\\b|ranging from|starting at|\\b90\\b|\\b200\\b|furniture rental|construction materials|virtual tour|features and benefits|same security|private units|multi-unit|one monthly rate|varies based on unit|browse available units|co-warehousing|small business community|1 readyspaces|visitor management|air cargo|airport|cargo|entrepreneurship|startup|closed-circuit|infrastructure|\\boffers?\\b|caters|\\bprovides\\b|locations may|know about renting|needs based on size|business needs based|penalty for scaling|satellite|small operators",
+ "final_draft": "runs/warehouse-space/draft_final_urgent.md",
+ "gate_brief": "top10"
 }

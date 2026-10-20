@@ -1,0 +1,66 @@
+# Florida facts for WareMatch state landing page (primary sources only)
+
+Researched 2026-10-20. Only government, port/airport authority and legislature sources. No 3PL/warehouse/marketplace/broker sources used.
+Confidence: A = page fetched and read at the primary source. B = secondary/partial (stated).
+Quotes are copied from fetched page text; quotes were relayed by the fetch tool's summarizer, so re-check before publishing anything that hangs on exact wording.
+
+## 1. Hurricane and flood planning
+
+| # | Fact | Quote | URL | Publisher | Date shown | Conf | Decision it supports |
+|---|---|---|---|---|---|---|---|
+| 1 | Official Atlantic season dates | "The Atlantic hurricane season runs from June 1 to November 30." | https://www.nhc.noaa.gov/climo/ | NOAA National Hurricane Center | No date shown (page cites data through 2025) | A | Time inventory builds, safety stock and contract/SLA terms around Jun 1-Nov 30. |
+| 2 | Florida hurricane history (1960 Donna) | "Donna is the only hurricane of record to produce hurricane-force winds in Florida" | https://www.nhc.noaa.gov/outreach/history/ | NOAA NHC | No date shown | A | Illustrates historical exposure; ask any Florida 3PL for its storm plan. Page is a narrative list, not an exposure ranking. |
+| 3 | Florida deaths, 1928 storm (note: figure is as stated on this page; NHC's deadliest-US-storm table gives a different range, 3,375-4,075 across FL/GUA/PR/TUR/MAR) | "1,836 people died in Florida, mainly due to the lake surge." | https://www.nhc.noaa.gov/outreach/history/ | NOAA NHC | No date shown | A | Use only as history; do not quote as a current risk statistic. Cite one page, not both. |
+| 4 | Look up flood zone for a site | "you can use the address search or map navigation to locate an area of interest." | https://www.fema.gov/flood-maps/national-flood-hazard-layer | FEMA | Last updated April 3, 2025 | A | Check the exact warehouse address in the NFHL viewer / msc.fema.gov before signing. |
+| 5 | Flood Map Service Center address lookup | "Enter the street address you are interested in learning more about and find out what flood zone it is in." | https://www.fema.gov/flood-maps/know-your-risk/homeowners | FEMA | Last updated November 18, 2025 | A | Ask the 3PL for the facility's flood zone and FIRMette; verify yourself. (msc.fema.gov/portal/search itself timed out when fetched; the lookup is described via the two FEMA pages here.) |
+| 6 | NFIP covers businesses; 30-day wait | "Plan ahead as there is typically a 30-day waiting period for an NFIP policy to go into effect." | https://www.fema.gov/flood-insurance | FEMA | Last updated October 20, 2026 | A | Buy flood cover before season, not once a storm is forecast. Same page: NFIP serves "property owners, renters and businesses". |
+| 7 | NFIP commercial limits and exclusion | "with up to $500,000 in coverage for each type of policy" | https://agents.floodsmart.gov/articles/ins-and-outs-nfip-commercial-coverage | FEMA (NFIP agent site) | November 2023 | A (page old; limits may have changed) | NFIP caps building and contents separately; inventory is contents. The page also lists "Financial losses caused by business interruption" as not covered. High-value inventory may need excess/private flood cover. Verify current limits. |
+| 8 | FDEM business continuity guidance | Page located (floridadisaster.org/business/planning-for-businesses/) but my direct fetch returned HTTP 404 | https://www.floridadisaster.org/business/planning-for-businesses/ | Florida Division of Emergency Management | n/a | B (search snippet only, not read) | NOT VERIFIED at primary source. Do not quote. Re-test the URL in a browser. |
+
+Not found: an NHC page with an official statement ranking Florida's hurricane exposure (the climo page does not mention Florida in text). Do not claim "Florida is the most hurricane-prone state" from NHC without finding that wording.
+
+## 2. Ports and trade
+
+| # | Fact | Quote / figure | URL | Publisher | Date shown | Conf | Decision |
+|---|---|---|---|---|---|---|---|
+| 9 | PortMiami FY2025 TEUs | "The port recorded 1,115,058 TEUs (twenty-foot equivalent units), up from 1,089,443 TEUs the previous fiscal year" | https://www.miamidade.gov/global/release.page?Mduid_release=rel1764622080449470 | Miami-Dade County (PortMiami) | December 2, 2025 | A | Size the Miami gateway; 11 straight years over 1M TEU per release. (A Q4 county report gives 1,115,692; use the release.) |
+| 10 | Port Everglades FY2025 TEUs | 1,167,552 TEUs, footnote "(*Preliminary Results for FY2025)"; FY2024 1,087,112 | https://www.porteverglades.net/about-us/statistics/cargo-statistics/ | Port Everglades (Broward County) | No date shown; footer 2026; figure labeled preliminary | A | Port Everglades is similar scale to PortMiami; say "preliminary". |
+| 11 | JAXPORT FY2025 TEUs | 1,388,841 TEUs FY2025; 1,340,412 FY2024; "JAXPORT's Fiscal Year begins on Oct. 1." | https://www.jaxport.com/media/statistics/ | JAXPORT | No date shown | A | Largest container port of the four by TEU. Relevant for Southeast/Northeast distribution. |
+| 12 | Port Tampa Bay FY2025 | 262,803 TEUs; 32,415,926 net tons (total port berths); "Data as of 11/10/2025" ("Subject to change") | https://www.porttb.com/cargo/ptb-statistics/ | Port Tampa Bay | Data as of 11/10/2025 | A | Tampa is a bulk/petroleum port with a smaller container flow; fit depends on cargo type. |
+| 13 | MIA 2025 cargo | Cargo "skyrocketed by 13.6% to nearly 3.5 million tons in 2025" | https://news.miami-airport.com/mia-soars-to-sixth-straight-record-year-in-cargo-growth/ | Miami International Airport | February 5, 2026 | A | Air freight gateway for high-value/time-sensitive stock. Note MIA's own cargo page says 3.4M tons freight, up 13.2% (https://www.miami-airport.com/home-cargo.asp, read, no date). The two figures differ (mail/rounding); use one source consistently. |
+| 14 | Florida foreign-trade zones (FTZ Board 85th Annual Report, CY2023, Appendix D, Florida) | Zones and grantees listed below | https://www.trade.gov/sites/default/files/2024-08/AR-2023%20.pdf | U.S. Foreign-Trade Zones Board (ITA) | Report covers calendar 2023 (file path dated 2024-08) | A (text extracted locally from the PDF) | Check whether a candidate warehouse sits in or can be activated under a zone (duty deferral/inverted tariff). Zones list is 2023; confirm current on ofis.trade.gov. |
+
+FTZ list (zone, name, grantee) from Appendix D, Florida: FTZ 25 Broward County (Broward County); FTZ 32 Miami (Greater Miami Foreign Trade Zone, Inc.); FTZ 42 Orlando (Greater Orlando Aviation Authority); FTZ 64 Jacksonville (Jacksonville Port Authority); FTZ 65 Panama City (Panama City Port Authority); FTZ 79 Tampa (City of Tampa); FTZ 135 Palm Beach County (Port of Palm Beach District); FTZ 136 Brevard County (Canaveral Port Authority); FTZ 166 Homestead (Vision Foreign-Trade Zone, Inc.); FTZ 169 Manatee County (Manatee County Port Authority); FTZ 193 Pinellas County (Pinellas County Economic Development); FTZ 198 Volusia and Flagler Counties (County of Volusia); FTZ 213 Fort Myers (Lee County Port Authority); FTZ 215 Sebring (Sebring Airport Authority); FTZ 218 St. Lucie County (St. Lucie County); FTZ 241 Fort Lauderdale (City of Fort Lauderdale); FTZ 249 Pensacola (Pensacola-Escambia County Promotion & Development Commission); FTZ 250 Seminole County (Sanford Airport Authority); FTZ 281 Miami-Dade County (Miami-Dade County).
+Zone 281 detail also read at https://ofis.trade.gov/Zones/Details/210 (ITA zone database): grantee Miami-Dade County, status Active, approved 08/02/2012, no page date. Caveat: the 2023 PDF was text-extracted with a homemade decoder; verify zone numbers against ofis.trade.gov before publishing. Zone 32 may be superseded by 281 (the FTZ 281 database entry mentions a 2023 reorganization application); not confirmed.
+
+## 3. Taxes
+
+| # | Fact | Quote | URL | Publisher | Date | Conf | Decision |
+|---|---|---|---|---|---|---|---|
+| 15 | Economic nexus for out-of-state retailers | "requires out-of-state retailers with no physical presence in Florida to collect, report, and remit sales and use tax"; "in excess of $100,000 over the previous calendar year"; page states "Effective July 1, 2021." | https://floridarevenue.com/taxes/eservices/Pages/registration.aspx | Florida Department of Revenue | Effective July 1, 2021 (stated); page itself undated | A | Sellers over $100k of Florida taxable remote sales in the prior calendar year must register, with or without a warehouse. |
+| 16 | Statute text of threshold | "exceeded $100,000" (substantial number of remote sales); history ends "s. 5, ch. 2021-2" | http://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0200-0299/0212/Sections/0212.0596.html | Florida Legislature, s. 212.0596, F.S. | no date shown | A | Statutory basis for #15. Page gave no effective date; DOR page (#15) does. |
+| 17 | Physical presence from owning/renting property in Florida | "Own, rent, or lease real property or tangible personal property in Florida." | https://floridarevenue.com/taxes/businesses/Pages/outstate.aspx | Florida Department of Revenue | no date shown | A (for the quote) | Strong indication that storing owned goods in a Florida warehouse creates presence, but this page does NOT say "inventory" or "warehouse" explicitly. State it as "check with a tax advisor/DOR (NICE@floridarevenue.com is the DOR contact on that page)". Also: "Registration alone does not make you liable for past uncollected sales tax." is from a different DOR page (seata.aspx), which says "you are liable for past taxes" if you had presence. |
+| 18 | Business rent tax repeal | "Sales Tax on Commercial Rentals Repealed Effective October 1, 2025" and "Examples of commercial rentals subject to the repeal include rentals of commercial office or retail space, warehouses, and self storage units." | https://floridarevenue.com/taxes/tips/Documents/TIP_25A01-04.pdf | Florida DOR, TIP 25A01-04 | Issued July 24, 2025 (date per search listing title; garbled in the extracted PDF text, so B for the date, A for the wording) | A (wording), B (issue date) | Warehouse lease rent for periods from Oct 1, 2025 carries no state sales tax; rent for periods through Sept 2025 still taxable. Do not extend this to storage fees: the same TIP excludes "docking or storage spaces for boats", and a separate DOR TIP (25A01-11, not read) covers parking/storage. |
+| 19 | Legislative basis | Senate bill summary: "Repeals the “business rent tax” beginning October 1, 2025." (HB 7031, 2025) | https://www.flsenate.gov/Committees/BillSummaries/2025/html/7031 | Florida Senate | no date shown; page does not confirm signing | A | Confirms the legislative source; enactment is confirmed by DOR's TIP, not by this page. |
+
+Open point: whether a 3PL storage/handling fee is "rent" under s. 212.031 is not answered by any page read. Do not claim 3PL fees are exempt.
+
+## 4. Perishables / cold chain
+
+| # | Fact | Quote | URL | Publisher | Date | Conf | Decision |
+|---|---|---|---|---|---|---|---|
+| 20 | MIA flower imports | "MIA welcomes 91% of all the flower imports by air to the U.S." and "394,181 U.S. tons of flower imports valued at $1.8 billion in 2025" | https://news.miami-airport.com/mia-welcomes-final-flower-shipments-for-mothers-day/ | Miami International Airport | May 7, 2026 | A (airport authority's own claim, self-reported) | Miami-area warehouses are close to the main U.S. air entry for flowers. Attribute to MIA. |
+| 21 | MIA perishables imports | "with imports dominated by perishables and exports led by high-value manufactured goods." | https://www.miami-airport.com/home-cargo.asp | Miami International Airport | 2024 commodity data cited; page undated | A | Supports Miami as a perishables air gateway. |
+| 22 | PortMiami perishables | "PortMiami is your Perishables Express Lane to the U.S." | https://www.miamidade.gov/portmiami/cargo.page | PortMiami | no date shown | A (marketing line, no figures) | Marketing statement; do not use as a statistic. |
+| 23 | Port Everglades FTZ | "Florida's first and largest Foreign-Trade Zone, conveniently situated in the heart of Port Everglades." | https://www.porteverglades.net/cargo/ | Port Everglades | no date shown | A (promotional claim) | Optional context for FTZ #14. |
+
+Not verified: MIA's "67% of perishables" claim (from its 2026 Facts at a Glance PDF) appeared only in a search snippet; the PDF returned 404 on fetch. Do not use it. No USDA, CBP or FDA page about Florida port/airport perishables was fetched or read; unverified.
+
+## Not verified / gaps
+- FDEM business-continuity page (404 on fetch).
+- msc.fema.gov search page (connection reset); lookup verified via two fema.gov pages instead.
+- NHC statement ranking Florida's hurricane exposure (none found).
+- "Inventory in a Florida warehouse = nexus" explicit DOR wording (not found; only property ownership/lease wording).
+- DOR TIP 21A01-03 (remote sellers) and TIP 25A01-04 PDFs could not be cleanly text-read by the fetch tool; TIP 25A01-04 wording was recovered by local decoding.
+- MIA Facts at a Glance PDF, FTZ current-status list.
+- Note: the memory file about misaligned competitor keyword tabs is not relevant to this task; no other files were modified.

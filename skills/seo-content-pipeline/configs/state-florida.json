@@ -1,0 +1,25 @@
+{
+ "page_url": "https://www.warematch.com/location/usa/florida",
+ "h1": "Find 3PL Warehousing in Florida",
+ "primary": "3pl florida",
+ "secondary": "warehouse florida, distribution centers in florida, 3pl companies florida",
+ "longtail": "",
+ "skeleton": "",
+ "facts": "facts/state-florida.md",
+ "existing_problems": "",
+ "mode": "state",
+ "gate": 60,
+ "title": "3PL Companies & Warehouses in Florida | WareMatch",
+ "description": "Find 3PL warehouses across Florida, including Miami, Orlando and Tampa. Compare pallet storage, fulfillment and distribution providers and get quotes.",
+ "skip_terms_regex": "nxtpoint|goodfirms|gobolt|phasev|fulfill\\.com|linklogistics|loopnet|cubework|readyspaces|themanifest|broadrange|star distribution|international3pl|goodfirms|top 10|top 100|best 3pl|biggest|largest|amazon|suite|for sale|for lease|for rent|facebook|liquidation",
+ "locked_text_file": "runs/state-florida/locked_text.txt",
+ "locked_json": "runs/state-florida/locked_sections.json",
+ "over_ignore_regex": "^(florida 3pl|3pl in florida|3pl in|in florida)$",
+ "basic_cov_min": 0.9,
+ "briefs": {
+  "top-intent": "3pl-florida",
+  "top10": "warehouse-florida"
+ },
+ "final_draft": "runs/state-florida/draft_v8.md",
+ "gate_brief": "top-intent"
+}

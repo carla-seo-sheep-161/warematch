@@ -197,3 +197,43 @@ Owner ruling: do NOT cite companies that sell warehousing/3PL/space (Buske Logis
 5. Internal links: authored copy links TOPICAL pages (industry + guide pages); location pages' state/city links already exist in the template, so never make authored linking location-based. Max 5, visibly placed in the relevant point.
 6. Never import into a NeuronWriter brief the owner is editing; use read-only evaluate-content and import only after they say so.
 7. Sheet: pipeline fills only EMPTY output cells (Neuronwriter Link / Score Before / Score After) and never overwrites the owner's entries (row 126 already had link, before=30, after=76 and a Google Doc). Before-score methods differ (owner 30 vs URL-scored 49 on the blog): align the method.
+
+### geo-intent-audit v1.0 finalized (2026-10-21)
+Skill now has 3 layers (technical_check.py raw-HTML/metadata/schema/crawler checks; audit.py content checks; judged rubric with evidence grades) plus references (AI crawlers/rendering, structured data, content evidence; INDEX.md verdicts). Research findings that change plans: Google's AI guide (2026-07-10) says GEO is 'still SEO', main lever = unique non-commodity content, no need for llms.txt/chunking/special schema; FAQ rich results ended 2026-05-07 and HowTo removed 2023; schema.org/LogisticsBusiness does not exist (team schema doc recommendation invalid); schema showed no measurable AI lift in an Ahrefs causal test; JS rendering by non-Google AI bots is unconfirmed (keep content in initial HTML). Live-site findings: AI bots not blocked, canonicals ok, FAQ schema matches visible text; blog meta description ends with '...' and lacks breadcrumb schema/'| WareMatch'; 2 JSON-LD blocks per page; og:image missing on home/integration/Texas pages; listing page has only ~386 raw-HTML words and 2 H1s.
+
+### 'So what' rule (owner feedback 2026-10-21): every statistic must change a decision. A sentence that lists figures without saying what the reader should do differently is a stat dump: cut it or turn it into advice ('rank your top ten destination states and ask each 3PL for transit times'). Keep at most one or two headline figures per point, rounded. geo-intent-audit now flags sections with >=4 figures and <2 decision cues. Removed from the USA page: the BLS labor-by-state sentence (accurate but not decision-relevant).
+
+## Case 4: /location/usa/florida (state location page, locked state template; sheet row 229): keyword brief '3pl florida' (primary; GSC shows 3PL queries, e.g. '3pl companies florida' 130 impressions) + 'warehouse florida' (sheet primary; SERP is landlord/real-estate intent, informational only)
+State template (../location_page_state_template): locked 'Why Use WareMatch?', 'Find a 3PL in [State]...' (1-2 sentences), 'How WareMatch Works'; authored TL;DR (<=3 sentences), 'When to Choose a 3PL [State]' (two-column table 'You need a [State] 3PL if' | 'You may not need one yet if', bullets), two 'what to consider' sections of 3 points each (1-5 sentences; headings changeable, second must cover a different aspect), FAQ 6. check_page.py has a 'state' mode (H2 order, locked copy vs live, table columns, bullets, 3/3/6 H3 counts, sentence limits). The live page has extra site modules not in the template (cost table, region lists): not authored by us.
+Data used: BLS QCEW by county (Polk 17.8k jobs, 5.6x concentration, I-4 corridor), TIGERweb interstates, NHC season dates, FEMA flood lookup, JAXPORT/Port Everglades/MIA figures, Florida DOR physical-presence wording and the Oct 1 2025 commercial-rent sales-tax repeal (TIP 25A01-04). Live-page unsourced thresholds removed ('$8 per package', 'fewer than 200 orders').
+| Stage | '3pl florida' brief | 'warehouse florida' brief | notes |
+|---|---|---|---|
+| Live page (before), scored by URL | 58 | 63 | includes ~8k chars of provider cards and city lists: not like-for-like |
+| Draft v1 (template-locked, new copy) | 50 | 51 | before term pass |
+| Final, imported (title 3PL Companies & Warehouses in Florida | WareMatch) | **65** | **58** | formula title scored 62/58; GSC-led title +3 |
+Competitors ('3pl florida'): median 52 all / 56 top-10, best 77 (a directory), SERP 89% transactional, 63% local, landing pages 37%.
+Lessons: (1) check the sheet's primary keyword against GSC before choosing the NeuronWriter brief; (2) the audit caught duplicated facts across sections (counties repeated in an FAQ, storm planning in 4 places): swap or point back instead of repeating; (3) state-level uniqueness came from county-level BLS data and Florida-only rules (rent-tax repeal, hurricane/flood), which the country page cannot offer; (4) agent-sourced PDF facts were not usable when text extraction failed: say 'commercial rentals', not 'warehouses', unless read verbatim.
+
+---
+# FAILURE MODES -> CONTROLS (consolidated 2026-10-21; every row came from a real run)
+| Failure observed | Control now in the pipeline | Where |
+|---|---|---|
+| Agents added H2s/emoji/filler to chase a score | Template lock modes (industry, blog, location, state) incl. sentence limits; mandatory human read-through | check_page.py, READTHROUGH.md |
+| Scores inflated by keyword-stuffed title/meta | Score with the SHIPPING title/meta only | optimize.py (config title/description) |
+| Easy NeuronWriter terms skipped (Florida: 8 basic + 57 extended missing; rule existed only in notes) | HARD GATE: basic-term coverage >=90% (default for every page), extended coverage reported/warned; mandatory easy-terms sweep before any 'ceiling' claim | optimize.py, configs/_defaults.json |
+| Competitor/ranking/brand terms leaking into targets | Default skip list merged with page skip list (never replaced) | configs/_defaults.json |
+| Sheet primary keyword mismatched real demand (warehouse Florida vs 3PL queries; landlord SERP) | Keyword/brief sanity step before drafting | keyword_check.py |
+| Stat dumps; unhelpful figures (BLS labor sentence) | 'So what' check: >=4 figures with <2 decision cues; rounded-figure rule | audit.py 3b, optimize.py (3% rounding tolerance) |
+| Facts repeated across sections (counties; storm plan) | Cross-section repetition check | audit.py 3c |
+| Ecommerce assumed on general 3PL pages | Audience-assumption check | audit.py 3c |
+| WareMatch connection generic / nonexistent on location pages | Connection check (>=3 sentences tying local decisions to filters / one request / compare matched providers); no invented network counts | audit.py |
+| Lowercased heading from case-insensitive replace | Heading-capital check; exact-case replacement helper pattern | check_page.py |
+| Tooling edits broke other scripts (clobbered variable, conditional variable) | Regression runner re-checks every page config after any tool change | regress.py |
+| Brief naming mismatch (analysis_<mode> vs tags) | Brief aliases in page config ('briefs') | optimize.py |
+| Agent-supplied facts unverified; unreadable PDFs; wrong-source claims | Lead re-reads each claim at the source; unreadable/agent-only claims excluded; facts file grades A/B/C | facts/*.md, SKILL.md |
+| Imported over an owner's brief; overwrote sheet cells | Never import into briefs being edited (use read-only evaluate); fill only empty sheet cells | SKILL.md, READTHROUGH.md |
+| No visibility of time/cost | Per-run time + token + dollar log (token counts entered by hand; context re-read overhead estimated) | runlog.py |
+| Page-specific template shapes (country vs state; extra live modules) | Mode per template with locked-copy check against live page; extra site modules are not authored | check_page.py, templates/ |
+## Stage order (v2)
+1 row + live audit + GSC queries -> 2 keyword/brief sanity (keyword_check.py) -> 3 skeleton/template mode -> 4 facts (primary-source, lead re-reads) -> 5 NeuronWriter briefs -> 6 draft -> 7 easy-terms sweep (gate: basic >=90%) -> 8 gates (check_page, optimize, promo_check, verify_sources) -> 9 READTHROUGH.md -> 10 geo-intent-audit (3b so-what, 3c repetition/audience/connection) -> 11 regress.py -> 12 import (only if the owner is not editing) + fill empty sheet cells -> 13 log case + runlog.py summary.
+## Cost reference (claude-sonnet-5-5, per 1M tokens, Claude API reference 2026-10): input $2.00, output $10.00, cache read $0.20, cache write $2.50. Florida page run: ~190k counted tokens (~95k main thread + ~94k research agent) = roughly $0.7-$1.0 for the counted tokens alone; the real bill is dominated by the whole conversation being re-read on every tool call, so a plausible total is several dollars; measure with runlog.py going forward.

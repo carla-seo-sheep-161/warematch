@@ -1,0 +1,7 @@
+{
+ "gate": 60,
+ "basic_cov_min": 0.9,
+ "ext_cov_warn": 0.4,
+ "skip_terms_regex": "nxtpoint|goodfirms|gobolt|phasev|fulfill\\.com|linklogistics|loopnet|cubework|readyspaces|themanifest|broadrange|star distribution|international3pl|shiphype|shipbob|flexport|racklify|tenantbase|warehub|xpo logistics|ceva|c\\.h\\. robinson|red stag|redstag|top 3pl|best 3pl companies|best 3pl providers|biggest 3pl|largest 3pl|leading 3pl|top 50|top 100|top 10|for sale|for lease|for rent|facebook|liquidation|suite",
+ "note": "defaults merged under every page config; page config overrides. basic_cov_min=0 opts out (not recommended)."
+}

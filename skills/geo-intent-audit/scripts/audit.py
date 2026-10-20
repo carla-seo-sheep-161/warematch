@@ -83,6 +83,23 @@ for s_ in secs:
     if figs >= 4 and cues < 2: dump.append(f"{s_['head'][:55]} ({figs} figures, {cues} decision cues)")
 P("\n## 3b. 'So what' test: stat dumps (>=4 figures, <2 decision cues)")
 P("- " + ("; ".join(dump) if dump else "none"))
+# ---- 3c cross-section repetition + audience assumption + WareMatch connection (owner feedback 2026-10-21)
+body_secs = [s_ for s_ in secs if s_["lvl"] >= 3 and s_["text"]]
+CAP = re.compile(r"(?<![.!?]\s)(?<!^)\b([A-Z][a-z]{3,})\b")
+rep_flags = []
+sets = [(s_["head"][:40], {w for w in CAP.findall(s_["text"])} | set(re.findall(r"\d[\d,.]{3,}%?", s_["text"]))) for s_ in body_secs]
+for i in range(len(sets)):
+    for j in range(i + 1, len(sets)):
+        common = sets[i][1] & sets[j][1]
+        if len(common) >= 4: rep_flags.append(f"{sets[i][0]} / {sets[j][0]}: shared {sorted(common)[:6]}")
+P("\n## 3c. Repetition across sections (>=4 shared names/figures between two sections)")
+P("- " + ("; ".join(rep_flags[:5]) if rep_flags else "none"))
+ECOM = re.compile(r"\b(e-?commerce|online (?:store|seller|retail)s?|web ?store|shopify|dtc)\b", re.I)
+ec = ECOM.findall(plain(raw))
+P(f"- audience assumption: {len(ec)} e-commerce references ({'FLAG: general 3PL pages must serve parcel, pallet, wholesale and retail shippers; keep e-commerce wording only where the source query or section is explicitly about online sellers' if len(ec) >= 3 else 'ok'})")
+wm = [x for x in re.split(r"(?<=[.!?])\s+", plain(raw)) if re.search(re.escape(a.brand), x, re.I) and re.search(r"\b(filter|request|quote|compare|match)\b", x, re.I)] if False else []
+conn = [x for x in re.split(r"(?<=[.!?])\s+", plain(raw)) if re.search(r"\b(filter|your request|one request|send one request|request for quote|compare matched)\b", x, re.I)]
+P(f"- WareMatch connection: {len(conn)} sentences tie a local decision to a WareMatch action (filter / one request / compare matched providers); location pages should have >=3 ({'FLAG' if a.type == 'location' and len(conn) < 3 else 'ok'}). Facts about WareMatch's own network need real data: never invent counts.")
 # ---- 4 citations / freshness
 P("\n## 4. Citations and freshness")
 ext = re.findall(r'<a [^>]*href="https?://(?!www\.warematch)[^"]+"[^>]*>', raw)
