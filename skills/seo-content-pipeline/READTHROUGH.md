@@ -12,3 +12,10 @@ Automated gates cannot see reader experience. Every item below came from a real 
 10. **Sources**: every primary-source claim re-read by the lead; unreadable PDFs and agent-only claims are NOT used; competitors and companies that sell warehousing/3PL/space are never cited.
 11. **Keyword/brief choice**: sheet primary vs GSC reality (`keyword_check.py`) and SERP intent (landlord/listing vs 3PL services) decided BEFORE drafting.
 12. **Etiquette**: never import into a NeuronWriter brief the owner is editing; fill only EMPTY sheet output cells; never overwrite owner entries.
+14. Gateways named: location pages name the actual ports/airports/interstates (Florida: PortMiami, Port Everglades, JAXPORT, Port Tampa Bay, Port Canaveral; Orlando has no seaport) in the intro and the landscape section.
+15. Demand test: for every topic, would a buyer name it as a reason to pick or reject a 3PL? Check SERP/PAA/GSC and competitor headings. A topic being citable is not enough (hurricanes failed; insurance/liability passed).
+16. Intro answers the capability-by-location query: which parts of the state suit what, and that WareMatch shows who can accommodate which capability where.
+17. Marketplace voice: the buyer builds a project scope, WareMatch shows matches, the buyer chooses. No "send a request"; the 3PL is not a commodity.
+18. Swap test: replace the state name with another state in each table bullet and heading; if it still reads true, it is generic. Rewrite with a state fact (e.g. Florida is at the end of the peninsula, so outbound freight to the Northeast is longer and costlier).
+19. Obligation claims: never tell the reader they may owe a tax or have a legal exposure unless an agency/statute page states it applies to their case. Say nothing rather than hedge.
+20. Table headers: use the headers written in the template unless the editor says otherwise; when an editor requests a change (e.g. drop "yet"), it applies to the whole page type.

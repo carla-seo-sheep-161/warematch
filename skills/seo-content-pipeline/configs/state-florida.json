@@ -20,6 +20,15 @@
   "top-intent": "3pl-florida",
   "top10": "warehouse-florida"
  },
- "final_draft": "runs/state-florida/draft_v9.md",
- "gate_brief": "top-intent"
+ "final_draft": "runs/state-florida/draft_v10.md",
+ "gate_brief": "top-intent",
+ "intro_must": [
+  "PortMiami",
+  "Port Everglades",
+  "JAXPORT",
+  "Port Tampa Bay|Port Canaveral",
+  "cold chain|bonded|hazmat"
+ ],
+ "banned_authored_regex": "\\\\b(send|submit|one|your|a|an) (free )?request\\\\b(?! for quote)",
+ "storm_max": 4
 }

@@ -18,3 +18,10 @@
 - Miami International Airport: cargo "skyrocketed by 13.6% to nearly 3.5 million tons in 2025" (release Feb 5, 2026). https://news.miami-airport.com/mia-soars-to-sixth-straight-record-year-in-cargo-growth/ (the 91% flower-import claim is NOT on this page: not used)
 - PortMiami FY2025 1,115,058 TEUs and Port Tampa Bay 262,803 TEUs: agent-read only (B); mention the ports by name without figures.
 - Reused national facts: CBP bonded warehouse (up to 5 years without duty), 21 CFR 1.225 FDA food facility registration (see facts/location-usa.md).
+
+## Added 2026-10-21 (verified)
+- Florida: "All items of inventory are exempt from ad valorem taxation" (s. 196.185, F.S., 2025: flsenate.gov/Laws/Statutes/2025/196.185). Inventory at a 3PL therefore carries no Florida property tax. Do NOT claim a tax obligation from storage; sales-tax nexus from stored inventory was not confirmed by a primary source.
+- Remote-sale dealer threshold: more than $100,000 taxable remote sales in the prior calendar year (s. 212.0596). Unverified whether 3PL-stored inventory alone creates nexus.
+- Orlando has no seaport. Port Everglades FY2025 ~1.17M TEU (preliminary), JAXPORT ~1.39M TEU (monthly table did not reconcile), PortMiami ~1.12M (secondary report), Port Tampa Bay ~263k (news report). Port Canaveral: no TEU figure, over 6.1M tons FY2025, mostly bulk.
+- Warehouse liability for customer goods is set by the warehouse contract and can be limited; no official-source figures found, so state no numbers.
+- Flood is typically excluded from standard property policies (FEMA says homeowners/commercial typically exclude flood; sources say "most"), Florida hurricane deductibles verified for residential only. Do not generalize to warehouses.
