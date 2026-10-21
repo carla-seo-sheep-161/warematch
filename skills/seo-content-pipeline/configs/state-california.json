@@ -1,0 +1,33 @@
+{
+ "mode": "state",
+ "gate": 60,
+ "skip_terms_regex": "nxtpoint|goodfirms|gobolt|phasev|fulfill\\.com|linklogistics|loopnet|cubework|readyspaces|themanifest|broadrange|star distribution|international3pl|goodfirms|top 10|top 100|best 3pl|biggest|largest|amazon|suite|for sale|for lease|for rent|facebook|liquidation",
+ "over_ignore_regex": "^(california 3pl|3pl in california|3pl in|in california)$",
+ "basic_cov_min": 0.9,
+ "banned_authored_regex": "\\\\b(send|submit|one|your|a|an) (free )?request\\\\b(?! for quote)",
+ "page_url": "https://www.warematch.com/location/usa/california",
+ "h1": "Find 3PL Warehousing in California",
+ "primary": "3pl california",
+ "secondary": "3pl companies california, 3pl los angeles, 3pl fulfillment california, warehouse california",
+ "longtail": "",
+ "skeleton": "",
+ "facts": "facts/state-california.md",
+ "existing_problems": "",
+ "title": "3PL Companies & Warehouses in California | WareMatch",
+ "description": "Find 3PL warehouses across California, including Los Angeles, the Inland Empire and the Bay Area. Compare providers and get quotes.",
+ "locked_text_file": "runs/state-california/locked_text.txt",
+ "locked_json": "runs/state-california/locked_sections.json",
+ "briefs": {
+  "top-intent": "top-intent",
+  "top10": "top10"
+ },
+ "final_draft": "runs/state-california/draft_v1.md",
+ "gate_brief": "top-intent",
+ "intro_must": [
+  "Port of Los Angeles|Los Angeles and Long Beach|Long Beach",
+  "Inland Empire",
+  "cold chain|bonded|hazmat"
+ ],
+ "airport_banned_regex": "$^",
+ "storm_max": 2
+}

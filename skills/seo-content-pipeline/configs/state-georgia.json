@@ -1,0 +1,33 @@
+{
+ "mode": "state",
+ "gate": 60,
+ "skip_terms_regex": "nxtpoint|goodfirms|gobolt|phasev|fulfill\\.com|linklogistics|loopnet|cubework|readyspaces|themanifest|broadrange|star distribution|international3pl|goodfirms|top 10|top 100|best 3pl|biggest|largest|amazon|suite|for sale|for lease|for rent|facebook|liquidation",
+ "over_ignore_regex": "^(georgia 3pl|3pl in georgia|3pl in|in georgia|3pl|fulfillment|savannah|port|metro|hazmat|pallet|shipment|inbound|i-20|i-75|3pl warehouse|distribution center|ecommerce)$",
+ "basic_cov_min": 0.9,
+ "banned_authored_regex": "\\\\b(send|submit|one|your|a|an) (free )?request\\\\b(?! for quote)",
+ "page_url": "https://www.warematch.com/location/usa/georgia",
+ "h1": "Find 3PL Warehousing in Georgia",
+ "primary": "warehouse logistics georgia",
+ "secondary": "3pl georgia, warehouse georgia, warehousing georgia, distribution centers in georgia",
+ "longtail": "",
+ "skeleton": "",
+ "facts": "facts/state-georgia.md",
+ "existing_problems": "",
+ "title": "Georgia Warehouse & 3PL Logistics Companies | WareMatch",
+ "description": "Find 3PL and warehouse logistics providers across Georgia, including Atlanta and Savannah. Compare storage and fulfillment providers and get quotes.",
+ "locked_text_file": "runs/state-georgia/locked_text.txt",
+ "locked_json": "runs/state-georgia/locked_sections.json",
+ "briefs": {
+  "top-intent": "top-intent",
+  "top10": "top10"
+ },
+ "final_draft": "runs/state-georgia/draft_v1.md",
+ "gate_brief": "top-intent",
+ "intro_must": [
+  "Savannah",
+  "Atlanta",
+  "cold chain|bonded|hazmat"
+ ],
+ "airport_banned_regex": "$^",
+ "storm_max": 2
+}

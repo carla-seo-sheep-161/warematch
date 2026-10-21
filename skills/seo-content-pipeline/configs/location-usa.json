@@ -16,5 +16,10 @@
  "title_nw_variant": "3PL US: Find Third-Party Logistics and 3PL Companies in the US",
  "description_nw_variant": "Find 3PL companies in the US. Compare third-party logistics providers, see where warehouse capacity sits and check customs, FDA and hazmat rules.",
  "final_draft": "runs/location-usa/draft_final.md",
- "gate_brief": "top-intent"
+ "gate_brief": "top-intent",
+ "intro_must": [
+  "Los Angeles",
+  "Savannah",
+  "cold chain|bonded|hazmat"
+ ]
 }
