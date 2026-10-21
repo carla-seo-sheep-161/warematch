@@ -30,5 +30,6 @@
   "cold chain|bonded|hazmat"
  ],
  "banned_authored_regex": "\\\\b(send|submit|one|your|a|an) (free )?request\\\\b(?! for quote)",
- "storm_max": 4
+ "storm_max": 4,
+ "airport_banned_regex": "Orlando International|Fort Lauderdale-Hollywood|\\bFLL\\b|\\bMCO\\b|\\bTPA\\b|Tampa International|Jacksonville International|\\bJAX\\b"
 }

@@ -57,9 +57,10 @@ _intro_miss = [r for r in cfg.get("intro_must", []) if not re.search(r, _intro, 
 _locked = set(l.strip() for l in open(cfg["locked_text_file"])) if cfg.get("locked_text_file") and os.path.exists(cfg["locked_text_file"]) else set()
 _ban = re.compile(cfg.get("banned_authored_regex") or r"(?!x)x", re.I)
 _banned = [m.group(0) for l in html.splitlines() if re.sub(r"<[^>]+>", "", l).strip() not in _locked for m in [_ban.search(re.sub(r"<[^>]+>", "", l))] if m]
+_air = re.findall(cfg.get("airport_banned_regex") or r"(?!x)x", html)
 _storm = len(re.findall(r"hurricane|storm", text))
-_fb_ok = not _intro_miss and not _banned and _storm <= cfg.get("storm_max", 99)
-print(f"feedback gates: intro missing {_intro_miss}; banned phrases {_banned}; storm mentions {_storm}/{cfg.get('storm_max', 'n/a')} -> {'ok' if _fb_ok else 'FAIL'}")
+_fb_ok = not _intro_miss and not _banned and not _air and _storm <= cfg.get("storm_max", 99)
+print(f"feedback gates: intro missing {_intro_miss}; banned phrases {_banned}; minor airports {_air}; storm mentions {_storm}/{cfg.get('storm_max', 'n/a')} -> {'ok' if _fb_ok else 'FAIL'}")
 ok = _fb_ok and page_ok and score is not None and _bcov >= cfg.get("basic_cov_min", 0.9) and score >= target and not over and all('rel="nofollow' in x for x in ext) and len(ext) >= 2
 brief = f"""# Revision brief — {v}
 Score {score} | gate {target} | competitor top-10 median {st.median(comp)}, best {max(a['competitors'][i]['content_score'] for i in range(len(a['competitors'])) if a['competitors'][i].get('content_score'))}
