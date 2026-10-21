@@ -17,7 +17,7 @@ The unit of work is one page = one keyword-map row + a config (`configs/<slug>.j
 2. **Keyword/brief sanity**: `keyword_check.py <gsc.json> "<sheet primary>" ["<alt>"]` and the SERP intent (landlord/listing vs 3PL services) before choosing the NeuronWriter brief.
 3. **Skeleton / template mode**: `check_page.py` modes `industry`, `blog` (add `--urgent` promo mode for "recommended first"), `location` (country), `state`; locked copy is checked verbatim against the live page.
 4. **Facts**: primary-source only, lead re-reads every claim; unreadable PDFs and agent-only claims are excluded; never cite companies that sell warehousing/3PL/space.
-5. **NeuronWriter briefs**: `nw.py new-query`, `fetch_analyses.py`; map briefs in the page config (`"briefs"`); defaults in `configs/_defaults.json` merge with the page skip list.
+5. **NeuronWriter brief**: ONE `nw.py new-query` per page with `competitors_mode` = `top-intent` (see PIPELINE.md Case 7), then `fetch_analyses.py <run>`; map briefs in the page config (`"briefs"`); defaults in `configs/_defaults.json` merge with the page skip list.
 6. **Draft** (`build_prompt.py` + template) with a fresh agent, or write directly.
 7. **Easy-terms sweep (mandatory)**: `optimize.py` prints basic and extended term coverage; **basic must be >= 90%** before any "ceiling" claim.
 8. **Gates**: `optimize.py <run> <brief> <draft>` (score with the SHIPPING title/meta; rounded figures within 3% are accepted), `check_page.py`, `promo_check.py` (blogs), `verify_sources.py`.
